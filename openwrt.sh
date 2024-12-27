@@ -6,7 +6,7 @@
 # License: MIT
 # https://github.com/tteck/Proxmox/raw/main/LICENSE
 # Based on work from https://i12bretro.github.io/tutorials/0405.html
-
+#Mise a jour davxci pour espace disk et cpu
 function header_info {
   clear
   cat <<"EOF"
@@ -197,8 +197,8 @@ function exit-script() {
 function default_settings() {
   VMID=$NEXTID
   HN=openwrt
-  CORE_COUNT="1"
-  RAM_SIZE="256"
+  CORE_COUNT="2"
+  RAM_SIZE="1024"
   BRG="vmbr0"
   VLAN=""
   MAC=$GEN_MAC
