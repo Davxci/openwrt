@@ -6,7 +6,7 @@
 # License: MIT
 # https://github.com/tteck/Proxmox/raw/main/LICENSE
 # Based on work from https://i12bretro.github.io/tutorials/0405.html
-#Mise a jour davxci pour espace disk et cpu
+
 function header_info {
   clear
   cat <<"EOF"
@@ -198,7 +198,7 @@ function default_settings() {
   VMID=$NEXTID
   HN=openwrt
   CORE_COUNT="2"
-  RAM_SIZE="1024"
+  RAM_SIZE="2048"
   BRG="vmbr0"
   VLAN=""
   MAC=$GEN_MAC
@@ -257,7 +257,7 @@ function advanced_settings() {
 
   if CORE_COUNT=$(whiptail --backtitle "Proxmox VE Helper Scripts" --inputbox "Allocate CPU Cores" 8 58 1 --title "CORE COUNT" --cancel-button Exit-Script 3>&1 1>&2 2>&3); then
     if [ -z $CORE_COUNT ]; then
-      CORE_COUNT="1"
+      CORE_COUNT="2"
     fi
     echo -e "${DGN}Allocated Cores: ${BGN}$CORE_COUNT${CL}"
   else
@@ -266,7 +266,7 @@ function advanced_settings() {
 
   if RAM_SIZE=$(whiptail --backtitle "Proxmox VE Helper Scripts" --inputbox "Allocate RAM in MiB" 8 58 256 --title "RAM" --cancel-button Exit-Script 3>&1 1>&2 2>&3); then
     if [ -z $RAM_SIZE ]; then
-      RAM_SIZE="256"
+      RAM_SIZE="2048"
     fi
     echo -e "${DGN}Allocated RAM: ${BGN}$RAM_SIZE${CL}"
   else
