@@ -198,7 +198,7 @@ function default_settings() {
   MAC=$GEN_MAC
   LAN_MAC=$GEN_MAC_LAN
   LAN_BRG="vmbr0"
-  LAN_IP_ADDR="192.168.1.1"
+  LAN_IP_ADDR="192.168.10.1"
   LAN_NETMASK="255.255.255.0"
   LAN_VLAN=",tag=999"
   MTU=""
@@ -287,7 +287,7 @@ function advanced_settings() {
 
   if LAN_IP_ADDR=$(whiptail --backtitle "Proxmox VE Helper Scripts" --inputbox "Set a router IP" 8 58 $LAN_IP_ADDR --title "LAN IP ADDRESS" --cancel-button Exit-Script 3>&1 1>&2 2>&3); then
     if [ -z $LAN_IP_ADDR ]; then
-      LAN_IP_ADDR="192.168.1.1"
+      LAN_IP_ADDR="192.168.10.1"
     fi
     echo -e "${DGN}Using LAN IP ADDRESS: ${BGN}$LAN_IP_ADDR${CL}"
   else
@@ -463,10 +463,10 @@ done
 msg_info "Creating OpenWrt VM"
 qm create $VMID -cores $CORE_COUNT -memory $RAM_SIZE -name $HN \
   -onboot 1 -ostype l26 -scsihw virtio-scsi-pci --tablet 0
-pvesm alloc $STORAGE $VMID $DISK0 4M 1>&/dev/null
+pvesm alloc $STORAGE $VMID $DISK0 100M 1>&/dev/null
 qm importdisk $VMID ${FILE%.*} $STORAGE ${DISK_IMPORT:-} 1>&/dev/null
 qm set $VMID \
-  -efidisk0 ${DISK0_REF},efitype=4m,size=4M \
+  -efidisk0 ${DISK0_REF},efitype=100m,size=100M \
   -scsi0 ${DISK1_REF},size=2048M \
   -boot order=scsi0 \
   -tags proxmox-helper-scripts \
