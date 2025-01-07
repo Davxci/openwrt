@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
 
+# Copyright (c) 2021-2024 tteck
+# Author: tteck (tteckster)
+#         Jon Spriggs (jontheniceguy)
+# License: MIT
+# https://github.com/tteck/Proxmox/raw/main/LICENSE
+# Based on work from https://i12bretro.github.io/tutorials/0405.html
 
 function header_info {
   clear
@@ -191,14 +197,14 @@ function exit-script() {
 function default_settings() {
   VMID=$NEXTID
   HN=openwrt
-  CORE_COUNT="2"
-  RAM_SIZE="2048"
+  CORE_COUNT="1"
+  RAM_SIZE="256"
   BRG="vmbr0"
   VLAN=""
   MAC=$GEN_MAC
   LAN_MAC=$GEN_MAC_LAN
   LAN_BRG="vmbr0"
-  LAN_IP_ADDR="192.168.10.1"
+  LAN_IP_ADDR="192.168.1.1"
   LAN_NETMASK="255.255.255.0"
   LAN_VLAN=",tag=999"
   MTU=""
@@ -249,18 +255,18 @@ function advanced_settings() {
     exit-script
   fi
 
-  if CORE_COUNT=$(whiptail --backtitle "Proxmox VE Helper Scripts" --inputbox "Allocate CPU Cores" 8 58 2 --title "CORE COUNT" --cancel-button Exit-Script 3>&1 1>&2 2>&3); then
+  if CORE_COUNT=$(whiptail --backtitle "Proxmox VE Helper Scripts" --inputbox "Allocate CPU Cores" 8 58 1 --title "CORE COUNT" --cancel-button Exit-Script 3>&1 1>&2 2>&3); then
     if [ -z $CORE_COUNT ]; then
-      CORE_COUNT="2"
+      CORE_COUNT="1"
     fi
     echo -e "${DGN}Allocated Cores: ${BGN}$CORE_COUNT${CL}"
   else
     exit-script
   fi
 
-  if RAM_SIZE=$(whiptail --backtitle "Proxmox VE Helper Scripts" --inputbox "Allocate RAM in MiB" 8 58 2048 --title "RAM" --cancel-button Exit-Script 3>&1 1>&2 2>&3); then
+  if RAM_SIZE=$(whiptail --backtitle "Proxmox VE Helper Scripts" --inputbox "Allocate RAM in MiB" 8 58 256 --title "RAM" --cancel-button Exit-Script 3>&1 1>&2 2>&3); then
     if [ -z $RAM_SIZE ]; then
-      RAM_SIZE="2048"
+      RAM_SIZE="256"
     fi
     echo -e "${DGN}Allocated RAM: ${BGN}$RAM_SIZE${CL}"
   else
@@ -287,7 +293,7 @@ function advanced_settings() {
 
   if LAN_IP_ADDR=$(whiptail --backtitle "Proxmox VE Helper Scripts" --inputbox "Set a router IP" 8 58 $LAN_IP_ADDR --title "LAN IP ADDRESS" --cancel-button Exit-Script 3>&1 1>&2 2>&3); then
     if [ -z $LAN_IP_ADDR ]; then
-      LAN_IP_ADDR="192.168.10.1"
+      LAN_IP_ADDR="192.168.1.1"
     fi
     echo -e "${DGN}Using LAN IP ADDRESS: ${BGN}$LAN_IP_ADDR${CL}"
   else
@@ -439,7 +445,7 @@ gunzip -f $FILE >/dev/null 2>/dev/null || true
 NEWFILE="${FILE%.*}"
 FILE="$NEWFILE"
 mv $FILE ${FILE%.*}
-qemu-img resize -f raw ${FILE%.*} 2048M >/dev/null 2>/dev/null
+qemu-img resize -f raw ${FILE%.*} 512M >/dev/null 2>/dev/null
 msg_ok "Extracted & Resized OpenWrt Disk Image ${CL}${BL}$FILE${CL}"
 STORAGE_TYPE=$(pvesm status -storage $STORAGE | awk 'NR>1 {print $2}')
 case $STORAGE_TYPE in
@@ -463,11 +469,11 @@ done
 msg_info "Creating OpenWrt VM"
 qm create $VMID -cores $CORE_COUNT -memory $RAM_SIZE -name $HN \
   -onboot 1 -ostype l26 -scsihw virtio-scsi-pci --tablet 0
-pvesm alloc $STORAGE $VMID $DISK0 300M 1>&/dev/null
+pvesm alloc $STORAGE $VMID $DISK0 4M 1>&/dev/null
 qm importdisk $VMID ${FILE%.*} $STORAGE ${DISK_IMPORT:-} 1>&/dev/null
 qm set $VMID \
-  -efidisk0 ${DISK0_REF},efitype=100m,size=300M \
-  -scsi0 ${DISK1_REF},size=2048M \
+  -efidisk0 ${DISK0_REF},efitype=4m,size=4M \
+  -scsi0 ${DISK1_REF},size=512M \
   -boot order=scsi0 \
   -tags proxmox-helper-scripts \
   -description "<div align='center'><a href='https://Helper-Scripts.com'><img src='https://raw.githubusercontent.com/tteck/Proxmox/main/misc/images/logo-81x112.png'/></a>
