@@ -198,15 +198,17 @@ function default_settings() {
   VMID=$NEXTID
   HN=openwrt
   CORE_COUNT="1"
-  RAM_SIZE="256"
+  RAM_SIZE="1024"
   BRG="vmbr0"
   VLAN=""
   MAC=$GEN_MAC
   LAN_MAC=$GEN_MAC_LAN
   LAN_BRG="vmbr0"
-  LAN_IP_ADDR="192.168.1.1"
+  LAN_IP_ADDR="192.168.10.1"
   LAN_NETMASK="255.255.255.0"
   LAN_VLAN=",tag=999"
+  CONFIG_TARGET_KERNEL_PARTSIZE="256"
+  CONFIG_TARGET_ROOTFS_PARTSIZE="512M"
   MTU=""
   START_VM="yes"
   echo -e "${DGN}Using Virtual Machine ID: ${BGN}${VMID}${CL}"
