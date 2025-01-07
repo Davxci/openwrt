@@ -207,8 +207,6 @@ function default_settings() {
   LAN_IP_ADDR="192.168.1.1"
   LAN_NETMASK="255.255.255.0"
   LAN_VLAN=",tag=999"
-  CONFIG_TARGET_KERNEL_PARTSIZE="256"
-  CONFIG_TARGET_ROOTFS_PARTSIZE="512"
   MTU=""
   START_VM="yes"
   echo -e "${DGN}Using Virtual Machine ID: ${BGN}${VMID}${CL}"
