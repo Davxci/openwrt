@@ -199,6 +199,8 @@ function default_settings() {
   HN=openwrt
   CORE_COUNT="1"
   RAM_SIZE="256"
+  CONFIG_TARGET_KERNEL_PARTSIZE="256"
+  CONFIG_TARGET_ROOTFS_PARTSIZE="512"
   BRG="vmbr0"
   VLAN=""
   MAC=$GEN_MAC
