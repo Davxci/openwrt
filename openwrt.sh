@@ -466,7 +466,7 @@ qm create $VMID -cores $CORE_COUNT -memory $RAM_SIZE -name $HN \
 pvesm alloc $STORAGE $VMID $DISK0 300M 1>&/dev/null
 qm importdisk $VMID ${FILE%.*} $STORAGE ${DISK_IMPORT:-} 1>&/dev/null
 qm set $VMID \
-  -efidisk0 ${DISK0_REF},efitype=300m,size=300M \
+  -efidisk0 ${DISK0_REF},efitype=100m,size=300M \
   -scsi0 ${DISK1_REF},size=2048M \
   -boot order=scsi0 \
   -tags proxmox-helper-scripts \
