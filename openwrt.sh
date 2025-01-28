@@ -447,7 +447,7 @@ gunzip -f $FILE >/dev/null 2>/dev/null || true
 NEWFILE="${FILE%.*}"
 FILE="$NEWFILE"
 mv $FILE ${FILE%.*}
-qemu-img resize -f raw ${FILE%.*} 512M >/dev/null 2>/dev/null
+qemu-img resize -f raw ${FILE%.*} 2048M >/dev/null 2>/dev/null
 msg_ok "Extracted & Resized OpenWrt Disk Image ${CL}${BL}$FILE${CL}"
 STORAGE_TYPE=$(pvesm status -storage $STORAGE | awk 'NR>1 {print $2}')
 case $STORAGE_TYPE in
