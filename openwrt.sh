@@ -200,7 +200,7 @@ function default_settings() {
   CORE_COUNT="1"
   RAM_SIZE="256"
   CONFIG_TARGET_KERNEL_PARTSIZE="256"
-  CONFIG_TARGET_ROOTFS_PARTSIZE="512"
+  CONFIG_TARGET_ROOTFS_PARTSIZE="2048"
   BRG="vmbr0"
   VLAN=""
   MAC=$GEN_MAC
@@ -475,7 +475,7 @@ pvesm alloc $STORAGE $VMID $DISK0 4M 1>&/dev/null
 qm importdisk $VMID ${FILE%.*} $STORAGE ${DISK_IMPORT:-} 1>&/dev/null
 qm set $VMID \
   -efidisk0 ${DISK0_REF},efitype=4m,size=4M \
-  -scsi0 ${DISK1_REF},size=512M \
+  -scsi0 ${DISK1_REF},size=2048M \
   -boot order=scsi0 \
   -tags proxmox-helper-scripts \
   -description "<div align='center'><a href='https://Helper-Scripts.com'><img src='https://raw.githubusercontent.com/tteck/Proxmox/main/misc/images/logo-81x112.png'/></a>
